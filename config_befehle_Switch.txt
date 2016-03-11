@@ -1,0 +1,60 @@
+   (buch: Interconnections: Bridges, Routers, Switches, and Internetworking Protocols)
+// Switch Switch> enableSwitch#config terminalSwitch(config)#hostname S1S1(config)# no ip domain-lookupS1(config)#line con 0S1(config-line)#password classS1(config-line)#loginS1(config-line)#exitS1(config)#line vty 0 15S1(config-line)#password ciscoS1(config-line)#loginS1(config-line)#exit
+S1(config)#enable password ciscoS1(config)#service password-encryptionS1(config)#exit
+S1#configure terminalS1(config)#ip default-gateway 172.16.99.1
+S1(config)#vlan 99S1(config-vlan)#name managementS1(config-vlan)#exit
+S1(config)#vlan 99S1(config-vlan)#name managementS1(config)#interface vlan 99S1(config-if)#ip address 172.16.99.11 255.255.255.0S1(config-if)#no shut downS1(config-if)#endS1#show vlanS1#show ip interface brief
+S1#config terminalS1(config)#interface f0/5S1(config-if)#switchport mode access
+S1(config-if)#switchport access vlan 99S1(config-if)#interface f0/6S1(config-if)#switchport mode accessS1(config-if)#switchport access vlan 99S1(config-if)#end
+S1(config)#ip domain-name CCNA-Lab.comS1(config)#username admin privilege 15 secret sshadminS1(config)#line vty 0 15S1(config-line)#transport input sshS1(config-line)#login localS1(config-line)#exit
+S1#config terminalS1(config)# crypto key generate rsaS1(config-line)#exit
+S1#show ip ssh
+S1#config tS1(config)#ip ssh time-out 75S1(config)#ip ssh authentication-retries 2
+S1#config tS1(config)#banner motd# "finger weg"S1(config-if-range)#interface range f0/1-4S1(config-if-range)#shutdownS1(config-if-range)#interface range f0/7-24S1(config-if-range)#shutdownS1(config-if-range)#interface range g0/1-2S1(config-if-range)#shutdownS1(config-if-range)#end
+S1(config)#no ip http serverS1(config)#interface f0/5S1(config-if)#shutdownS1(config-if)#switchport port-securityS1(config-if)#switchport port-security mac-address stickyS1#show port-security interface f0/5S1#show interface f0/5S1#show port-securitty-address
+S1#config termS1(config)#interface f0/5S1(config-if)#shutdownS1(config-if)#no shutdownS1(config-if)#end------------------------
+S1(config)# vlan 10S1(config-vlan)#name studentS1(config-vlan)#vlan 20S1(config-vlan)#name facultyS1(config-vlan)#end
+S1(config)#interface f0/6S1(config-if)#switchport mode accessS1(config-if)#switchport access vlan 10S1(config-if)#end
+S1(config)#interface vlan 199S1(config-if)#no ip addressS1(config-if)#interface vlan 99S1(config-if)#ip address 192.168.1.11 255.255.255.0S1(config-if)#end
+S1(config)#interface range f0/11-24S1(config-if-range)#switchport mode accessS1(config-if-range)#switchport access vlan 10S1(config-if-range)#end
+S1(config)#interface f0/11S1(config-if)#switchport mode accessS1(config-if)#switchport access vlan 20S1(config-if)#end
+S1(config)#interface f0/21S1(config-if)#switchport mode accessS1(config-if)#switchport access vlan 20S1(config-if)#end
+S1(config)#interface f0/24S1(config-if)#no switchport accass vlanS1(config-if)#end
+S1(config)#interface f0/24S1(config-if)#switchport access vlan 30S1(config)#no vlan 30
+S1#conf terminalS1(config)#interface f0/1S1(config-if)#switchport mode dynamic desirableS1#conf terminalS1(config)#interface f0/1S1(config-if)#switchport mode trunk 					// alle vlans werden durchgelassenS1(config-if)#switchport trunk allowed vlan 10,20,30,99 		//um trunk für gewisse vlans einzuschränken(Sicherheit)S1(config-if)#do show interfaces trunk
+------------------
+(5.1.2.4&5.1.3.7)
+S1(config)#ip default-gateway 192.168.10.1
+S1(config)#line con 0S1(config-line)#logging synchronous					//nur bedienungshilfe damit log zeile unten
+--------2.1.2.10 (16.10.2015)-------------
+S1# show spanning-tree
+S1(config)# interface f0/2
+S1(config-if)# no spanning-tree cost 18
+
+--------2.3.2.3 (30.10.2015)------
+S1(config)#interface f0/3
+S1(config-if)#switchport mode trunk
+S1(config-if)#switch trunk native vlan 99
+S1(config)# spanning-tree mode pvst
+S1(config)#show spanning-tree vlan
+S1(config)#spanning-tree VLAN 1 root secondary
+S1(config)# interface f0/6S1(config-if)#spanning-tree portfast
+S1(config-if)#spanning-tree bpduguard enable 
+S2(config)#spanning-tree VLAN 1,10,99 root primary
+--------3.2.1.4 (13.11.2015)------
+S1(config)#interface range f0/3-4
+S1(config-if-range)#channel-group 1 mode desirable
+S1(config-if-range)#no shutdown
+S1(config)#do show run interface f0/3
+
+S1(config)#interface port-channel 1
+S1(config-if)#switchport mode trunk
+S1(config-if)#switchport trunk native vlan 99
+S3(config)#interface range f0/3-4
+S3(config-if-range)#channel group 1 mode auto
+S3(config-if-range)#no shutdown
+-----------IPv6-----------
+———conf&verifying IPv6————
+Switch(config-if)# ipv6 address 2001:0DB8:c18:1::/64 eui 64
+------10.2.3.5--------
+Switch(config)#sdm prefer dual-ipv4-and-ipv6 default  		//dual ipv4&ipv6 as default templateSwitch#endSwitch#reloadS1(config)#interface vlan1						//obtain ipv6 address through SLAACS1(config-if)#ipv6 address autoconfigS1(config-if)#end
