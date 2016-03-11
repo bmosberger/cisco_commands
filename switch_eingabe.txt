@@ -1,0 +1,22 @@
+Switch
+
+enable
+conf t
+hostname R1
+no ip domain-lookup
+
+ip default-gateway 172.16.99.1
+
+vlan 99
+name management 
+exit
+
+interface vlan 99ip address 172.16.99.11 255.255.255.0no shut downend
+
+
+interface f0/5
+switch port mode trunk
+switchport trunk native vlan 99
+
+interface f0/18
+switch port access vlan 3
