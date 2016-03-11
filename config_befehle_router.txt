@@ -176,7 +176,7 @@ R1# show ip ospf interface
 R1# show ip ospf neighbor
 
 
-
+-------7.2.2.5 (26.2.16)-----R1(config)# router eigrp 10R1(config-router)# network 10.1.1.0 0.0.0.3R1(config-router)# network 192.168.1.0 0.0.0.255R1(config-router)# network 10.3.3.0 0.0.0.3R1#show ip eigrp neighborsR1# show ip route eigrpR1# show ip eigrp topologyR1# show ip protocolsR1# show interface s0/0/0R1(config)# interface s0/0/0R1(config-if)# bandwidth 2000R1(config-if)# interface s0/0/1R1(config-if)# bandwidth 64R1(config)# router eigrp 10R1(config-router)# passive-interface g0/0-------8.1.5.5 (4.3.16)-----R1(config)# router eigrp 1R1(config-router)# auto-summaryR3(config)# interface s0/0/0R3(config-if)# ip summary-address eigrp 1 192.168.33.0 255.255.255.240R3(config-if)# exitR3(config)# interface s0/0/1R3(config-if)# ip summary-address eigrp 1 192.168.33.0 255.255.255.240R2(config)# ip route 0.0.0.0 0.0.0.0 Lo1		//default static route with  exit interface Lo1R2(config)# router eigrp 1R2(config-router)# redistribute static			//propagate default static route to other participating routersR1(config)# interface s0/0/0					//Configure  serial link between R1/R2 to allow 75 percent of link bandwidth for EIGRP trafficR1(config-if)# ip bandwidth-percent eigrp 1 75R2(config)# interface s0/0/0R2(config-if)# ip bandwidth-percent eigrp 1 75R1(config)# interface s0/0/0					//set timer intervalR1(config-if)# ip hello-interval eigrp 1 60R1(config-if)# ip hold-time eigrp 1 180R1(config)# interface s0/0/1R1(config-if)# ip hello-interval eigrp 1 60R1(config-if)# ip hold-time eigrp 1 180R1(config)# key chain EIGRP-KEYS				//Configure authentication keys.R1(config-keychain)# key 1R1(config-keychain-key)# key-string ciscoR1(config)# interface s0/0/0					// EIGRP link authentication R1(config-if)# ip authentication key-chain eigrp 1 EIGRP-KEYSR1(config-if)# ip authentication mode eigrp 1 md5R1(config-if)# interface s0/0/1R1(config-if)# ip authentication key-chain eigrp 1 EIGRP-KEYSR1(config-if)# ip authentication mode eigrp 1 md5show controllersshow ip eigrp neighborshow ip eigrp interfacesshow ip eigrp interface detailshow ip routeshow ip route eigrpshow ip protocolsshow runshow run | section router eigrp
 
 
 
@@ -242,5 +242,8 @@ RA(config)# interface GigabitEthernet 0/0RA(config-if)# ipv6 ospf 1 area 1
 
 RA(config)# ipv6 route ::/0 2001:DB8:FEED:1::2							// statische route aus ospf
 RA(config)# ipv6 ospf 10
-RA(config-rtr)# default information originate 							
+RA(config-rtr)# default information originate 
+
+
+-------7.4.3.5 (26.2.16)-----R1(config)# ipv6 unicast-routingR1(config)# ipv6 router eigrp 1R1(config)# ipv6 router eigrp 1R1(config-rtr)# eigrp router-id 1.1.1.1R1(config)# ipv6 router eigrp 1R1(config-rtr)# no shutdownR1(config)# interface g0/0R1(config-if)# ipv6 eigrp 1R1(config-if)# interface s0/0/0R1(config-if)# ipv6 eigrp 1R1(config-if)# interface s0/0/1R1(config-if)# ipv6 eigrp 1R1(config)# ipv6 router eigrp 1R1(config-rtr)# passive-interface g0/0R3(config)# ipv6 router eigrp 1R3(config-rtr)# passive-interface default  							// alle interfaces auf passiveR3(config-rtr)# no passive-interface s0/0/0 						// s0/0/0 wieder active							
 
