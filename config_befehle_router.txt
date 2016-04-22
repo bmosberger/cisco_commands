@@ -393,7 +393,7 @@ R1(config-if)# frame-relay map ipv6 2001:db8:acad:b::1 103
 
 R1(config-if)# no shutdown
 
-
+R1# debug frame-relay lmi
 
 -----------IPv6-----------
 
