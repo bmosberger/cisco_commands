@@ -354,6 +354,47 @@ Central# debug ppp authentication
 Central(config)# username Branch1 password cisco
 
 
+-------4.2.2.7 (22.4.16)-----
+
+FR(config)# frame-relay switching				//command enables Frame Relay switching globally on a router
+
+FR(config)# interface s0/0/0					
+FR(config-if)# encapsulation frame-relay			//Change the interface encapsulation
+
+FR(config)# interface s0/0/0					//Change the interface type to DCE
+FR(config-if)# frame-relay intf-type dce
+
+FR(config-if)# frame-relay route 103 interface s0/0/1 301	//Configure DLCI
+FR(config-if)# no shutdown
+
+FR(config)# interface s0/0/1					//Configure Frame Relay on S0/0/1
+FR(config-if)# encapsulation frame-relay
+FR(config-if)# frame-relay intf-type dce
+FR(config-if)# frame-relay route 301 interface s0/0/0 103
+FR(config-if)# no shutdown
+
+FR# show frame-relay pvc	
+
+
+R1(config)# interface s0/0/0					//Change the encapsulation 
+R1(config-if)# encapsulation frame-relay
+
+R1(config)# interface s0/0/0					//disable Inverse ARP
+R1(config-if)# no frame-relay inverse-arp
+
+R1(config)# interface s0/0/0					// map an IP address to a DLCI statically
+R1(config-if)# frame-relay map ip 10.1.1.2 103 broadcast
+R1(config-if)# frame-relay map ipv6 2001:db8:acad:b::3 103
+R1(config-if)# frame-relay map ipv6 fe80::3 103 broadcast
+
+R1(config)# interface s0/0/0					//the DLCI must be created to map
+R1(config-if)# frame-relay map ip 10.1.1.1 103
+R1(config-if)# frame-relay map ipv6 2001:db8:acad:b::1 103
+
+R1(config-if)# no shutdown
+
+
+
 -----------IPv6-----------
 
 
