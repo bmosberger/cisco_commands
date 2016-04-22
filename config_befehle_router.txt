@@ -373,8 +373,6 @@ FR(config-if)# frame-relay intf-type dce
 FR(config-if)# frame-relay route 301 interface s0/0/0 103
 FR(config-if)# no shutdown
 
-FR# show frame-relay pvc	
-
 
 R1(config)# interface s0/0/0					//Change the encapsulation 
 R1(config-if)# encapsulation frame-relay
@@ -394,6 +392,9 @@ R1(config-if)# frame-relay map ipv6 2001:db8:acad:b::1 103
 R1(config-if)# no shutdown
 
 R1# debug frame-relay lmi
+FR# show frame-relay pvc
+R1# debug ip icmp
+R1# undebug all
 
 -----------IPv6-----------
 
