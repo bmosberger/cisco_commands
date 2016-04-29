@@ -396,6 +396,49 @@ FR# show frame-relay pvc
 R1# debug ip icmp
 R1# undebug all
 
+
+-------6.3.2.3 (29.4.16)-----
+
+ISP(config)# username Cust1 password ciscopppoe				//Create local database with username  password
+ISP(config)# ip local pool PPPoEPOOL 10.0.0.1 10.0.0.10			//Create pool of addresses that assigned to customers
+
+ISP(config)# interface virtual-template 1		//Create Virtual Template and associate  IP address of G0/1 with it
+ISP(config-if)# ip address 10.0.0.254 255.255.255.0	
+ISP(config-if)# mtu 1492				//max. übertragungseinheit
+ISP(config-if)# peer default ip address pool PPPoEPOOL	//Associate the Virtual Template with the pool of addresses
+ISP(config-if)# ppp authentication chap callin		// Configure CHAP to authenticate customers
+ISP(config-if)# exit
+
+ISP(config)# bba-group pppoe global			//Assign the template to the PPPoE group
+ISP(config-bba-group)# virtual-template 1
+ISP(config-bba-group)# exit
+
+ISP(config)# interface g0/1				//Associate the bba-group with the G0/1 physical interface
+ISP(config-if# pppoe enable group global
+ISP(config-if)# no shutdown
+
+Cust1(config)# interface g0/1				//Configure G0/1 interface for PPPoE connectivity
+Cust1(config-if)# pppoe enable
+Cust1(config-if)# pppoe-client dial-pool-number 1
+Cust1(config-if)# exit
+
+Cust1(config)# interface dialer 1			//Associate the G0/1 interface with a dialer interface
+Cust1(config-if)# mtu 1492
+Cust1(config-if)# ip address negotiated
+Cust1(config-if)# encapsulation ppp
+Cust1(config-if)# dialer pool 1
+Cust1(config-if)# ppp authentication chap callin
+Cust1(config-if)# ppp chap hostname Cust1		//hostname und passwort gleich wie open bei isp router
+Cust1(config-if)# ppp chap password ciscopppoe
+Cust1(config-if)# exit
+
+Cust1(config)# ip route 0.0.0.0 0.0.0.0 dialer 1	//Set up a static default route pointing to the Dialer interface
+
+Cust1# debug ppp authentication				//Set up debugging on Cust1 to display PPP and PPPoE negotiation
+Cust1# debug pppoe events
+
+Cust1# show pppoe session 
+
 -----------IPv6-----------
 
 
