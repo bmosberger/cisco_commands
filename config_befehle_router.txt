@@ -335,6 +335,7 @@ show ip protocols
 show run
 show run | section router eigrp
 debug eigrp fsm
+undebug all
 
 -------3.3.2.8 (8.4.16)-----
 
