@@ -326,6 +326,7 @@ R1(config-if)# ip authentication mode eigrp 1 md5
 
 show controllers
 show ip eigrp neighbor
+show ip eigrp topology
 show ip eigrp interfaces
 show ip eigrp interface detail
 show ip route
