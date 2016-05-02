@@ -334,6 +334,7 @@ show ip route eigrp
 show ip protocols
 show run
 show run | section router eigrp
+debug eigrp fsm
 
 -------3.3.2.8 (8.4.16)-----
 
