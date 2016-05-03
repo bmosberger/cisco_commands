@@ -380,6 +380,7 @@ FR(config-if)# frame-relay intf-type dce
 FR(config-if)# frame-relay route 301 interface s0/0/0 103
 FR(config-if)# no shutdown
 
+FR# show frame-relay route
 
 R1(config)# interface s0/0/0					//Change the encapsulation 
 R1(config-if)# encapsulation frame-relay
