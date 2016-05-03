@@ -371,8 +371,8 @@ FR(config-if)# encapsulation frame-relay			//Change the interface encapsulation
 FR(config)# interface s0/0/0					//Change the interface type to DCE
 FR(config-if)# frame-relay intf-type dce
 
-FR(config-if)# frame-relay route 103 interface s0/0/1 301	//Configure DLCI
-FR(config-if)# no shutdown
+FR(config-if)# frame-relay route 103 interface s0/0/1 301	//Configure DLCI to forward incoming traffic on interface 
+FR(config-if)# no shutdown					S0/0/0 with DLCI 103 to S0/0/1 with output of DLCI of 301.
 
 FR(config)# interface s0/0/1					//Configure Frame Relay on S0/0/1
 FR(config-if)# encapsulation frame-relay
