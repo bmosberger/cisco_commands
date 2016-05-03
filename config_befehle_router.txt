@@ -341,15 +341,19 @@ undebug all
 
 Central#show interfaces serial 0/0/0
 
-Central(config)# interface s0/0/0
+Central(config)# interface s0/0/0			//encapsulation from HDLC to PPP
 Central(config-if)# encapsulation ppp
+
 Central# debug ppp negotiation
 Central# debug ppp packet
 
-Central(config)# username Branch3 password cisco
+Branch1(config)# interface s0/0/0			//encapsulation from PPP to HDLC
+Branch1(config-if)# encapsulation hdlc
+ 
+Central(config)# username Branch3 password cisco	//Configure a username for CHAP authentication.
 Branch3(config)# username Central password cisco
 
-Branch3(config)# interface s0/0/1
+Branch3(config)# interface s0/0/1			//Configure the interface S0/0/1 on Branch3 for CHAP authentication.
 Branch3(config-if)# ppp authentication chap
 
 Central# debug ppp authentication
