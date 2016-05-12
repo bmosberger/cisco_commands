@@ -447,6 +447,21 @@ Cust1# debug pppoe events
 
 Cust1# show pppoe session 
 
+
+-------7.2.2.3 (12.5.16)-----
+
+RA(config)# interface tunnel 0				//Enter into the configuration mode for RA Tunnel 0
+RA(config-if)# ip address 10.10.10.1 255.255.255.252	//Set the IP address as indicated in the Addressing Table
+RA(config-if)# tunnel source s0/0/0			//Set the source and destination for the endpoints of Tunnel 0.
+RA(config-if)# tunnel destination 209.165.122.2
+RA(config-if)# tunnel mode gre ip			//Configure Tunnel 0 to convey IP traffic over GRE
+RA(config-if)# no shutdown
+
+RA(config)# ip route 192.168.2.0 255.255.255.0 10.10.10.2	//Establish a route between the 192.168.X.X networks using 
+RB(config)# ip route 192.168.1.0 255.255.255.0 10.10.10.1	//the 10.10.10.0/30 network as the destination
+
+
+
 -----------IPv6-----------
 
 
