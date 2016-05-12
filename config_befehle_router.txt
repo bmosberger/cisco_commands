@@ -460,6 +460,13 @@ RA(config-if)# no shutdown
 RA(config)# ip route 192.168.2.0 255.255.255.0 10.10.10.2	//Establish a route between the 192.168.X.X networks using 
 RB(config)# ip route 192.168.1.0 255.255.255.0 10.10.10.1	//the 10.10.10.0/30 network as the destination
 
+-------7.2.2.4 (12.5.16)-----
+
+
+
+
+
+
 
 
 -----------IPv6-----------
