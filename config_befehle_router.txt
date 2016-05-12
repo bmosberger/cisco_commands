@@ -468,7 +468,7 @@ RA(config-router)# network 10.10.10.0 0.0.0.3 area 0
 
 RA# show ip interface brief
 RA# show ip interface brief | interface tunnel
-RA# show interface tunnel
+RA# show interface tunnel 0
 RA# show ip ospf neighbor
 
 
