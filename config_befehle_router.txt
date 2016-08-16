@@ -472,7 +472,39 @@ RA# show interface tunnel 0
 RA# show ip ospf neighbor
 
 -------CCNASv1.1_Chp08_LAB_A_SITE2SITE (20.5.16)-----
-todo
+R1(config)# crypto isakmp enable       				//enable IKE (sollte eigentlich per default sein )
+R3(config)# crypto isakmp enable 
+
+R1(config)# crypto isakmp policy 10				//define policy 10
+R1(config-isakmp)# authentication pre-share 
+R1(config-isakmp)# encryption aes 256 
+R1(config-isakmp)# hash sha 
+R1(config-isakmp)# group 5 
+R1(config-isakmp)# lifetime 3600 
+R1(config-isakmp)# end
+
+R3(config)# crypto isakmp policy 10 
+R3(config-isakmp)# authentication pre-share 
+R3(config-isakmp)# encryption aes 256 
+R3(config-isakmp)# hash sha 
+R3(config-isakmp)# group 5 
+R3(config-isakmp)# lifetime 3600 
+R3(config-isakmp)# end
+
+R1# show crypto isakmp policy 					//verify policy
+
+R1(config)# crypto isakmp key cisco123 address 10.2.2.1 	//configure preshared key
+R3(config)# crypto isakmp key cisco123 address 10.1.1.1		//ip addresse ist von router gegenüber
+
+
+R1(config)# crypto ipsec transform-set 50 esp-aes 256 esp-sha-hmac 	//create ipsec trasfrom set
+R1(cfg-crypto-trans)#exit					// ESP trasform mit AES 256 mit ESP und SHA hash funktion
+R3(config)# crypto ipsec transform-set 50 esp-aes 256 esp-sha-hmac	//trasform set muss mit R1 übereinstimmen
+R3(cfg-crypto-trans)#exit
+
+
+R1(config)# crypto ipsec security-association lifetime seconds 1800 	//set ipsec security association lifetime to 30min
+R3(config)# crypto ipsec security-association lifetime seconds 1800 
 
 
 -------8.3.3.3 (10.6.16)-----
