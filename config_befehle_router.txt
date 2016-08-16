@@ -212,7 +212,7 @@ Gateway# show ip nat translations
 R1(config)# interface g0/1                
 R1(config-if)# standby 1 ip 192.168.1.254   
 R1(config-if)# standby 1 priority 150
-R1(config-if)# standby 1 preempt   									//reisst active an sich auch nach neustart
+R1(config-if)# standby 1 preempt   				//reisst active an sich auch nach neustart
 R1# show standby
 R1# show standby brief
 
@@ -227,36 +227,36 @@ R1(config-if)# glbp 1 load-balancing round-robin
 ÑÑÑ6.2.3.6(30.1.16)ÑÑ
 
 R1(config)#router ospf 1 
-R1(config-router)# router-id 1.1.1.1									// router-id festlegen
-R1(config-router)# network 10.1.2.0 0.0.0.255 area 1 						// angrenzende netze angeben
+R1(config-router)# router-id 1.1.1.1					// router-id festlegen
+R1(config-router)# network 10.1.2.0 0.0.0.255 area 1 			// angrenzende netze angeben
 R1(config-router)# network 192.168.10.0 0.0.0.3 area 0
 
-R1(config-router)#passive-interface lo1								// passive interface angeben
-R1(config-router)#default-information originate							// damit ospf aus den areas kommt
+R1(config-router)#passive-interface lo1					// passive interface angeben
+R1(config-router)#default-information originate				// damit ospf aus den areas kommt
 
 R1(config)# interface s0/0/0
 R1(config-if)# ip ospf priority 150
-R1(config-if)# ip ospf message-digest-key 1 md5 Cisco123 						//OSPF MD5 authentication on interface with authentication key Cisco123
+R1(config-if)# ip ospf message-digest-key 1 md5 Cisco123 	//OSPF MD5 authentication on interface with authentication 									key Cisco123
 R1(config-if)# ip ospf authentication message-digest
 R1(config-if)# ip ospf hello-interval 5
 R1(config-if)# ip ospf dead-interval 20
-R1(config-if)# bandwidth 128										// bandweite des interfaces anpassen
+R1(config-if)# bandwidth 128						// bandweite des interfaces anpassen
 
-R1(config)# interface s0/0/0										// configure md5 authentication global
+R1(config)# interface s0/0/0						// configure md5 authentication global
 R1(config-if)# ip ospf message-digest-key 1 md5 Cisco123 
 R1(config)# router ospf 1
 R1(config-router)# area 0 authentication message-digest
 
-R1(config)# router ospf 1										// configure summary routes for area 1 , R1
+R1(config)# router ospf 1						// configure summary routes for area 1 , R1
 R1(config-router)# area 1 range 192.168.0.0 255.255.252.0
-R1(config-router)# auto-cost reference-bandwidth 1000						// cost referent anpassen (gier fŸr gigabit)
+R1(config-router)# auto-cost reference-bandwidth 1000			// cost referent anpassen (gier fŸr gigabit)
 
 
-R1(config)# router ospf 1										// per default alle interface passive setzen
+R1(config)# router ospf 1						// per default alle interface passive setzen
 R1(config-router)# passive-interface default
-R1(config-router)#no passive-interface GigabitEthernet0/0						// ausser g0/0
+R1(config-router)#no passive-interface GigabitEthernet0/0		// ausser g0/0
 
-R1(config)#clear ip ospf process									// um ospf neu zu starten
+R1(config)#clear ip ospf process					// um ospf neu zu starten
 
 R1# show ip protocols
 R1# show ip route ospf
@@ -552,7 +552,17 @@ R1(config)# ntp master 	//ntp master konfigurieren (5 ist startnummer->number of
 
 R2(config)# ntp server 10.1.1.1 				//R2 als ntp client konfigurieren, ntp server angeben
 R2(config)# ntp update-calendar					//update calendar  periodisch mit ntp time 
+R2# show ntp associations					//verify
+R2# show run | include timestamp				//verfiy das timestamp service is enabled for logging on R2
+R2(config)# service timestamps log datetime msec		//wenn nicht aktivieren
 
+R2(config)# logging host 172.16.2.3			//conf R2 to send syslog messages to syslog server (ip angeben)
+R2# show logging						//display default logging settings
+
+
+R2(config)# logging trap ?				//severity levels anzeigen
+R2(config)# logging trap warnings			//change logging severits level zu 4  (2möglichkeiten)
+R2(config)# logging trap 4				//etz werden levels 4,3,2,1,0 geloggt
 
 
 
