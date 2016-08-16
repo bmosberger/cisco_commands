@@ -543,6 +543,13 @@ R1# show crypto isakmp sa
 R1# show crypto ipsec sa
 R1# debug eigrp packets
 
+
+-------8.1.2.6-------
+
+
+
+
+
 -------8.3.3.3 (10.6.16)-----
 todo
 
