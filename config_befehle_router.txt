@@ -536,6 +536,13 @@ R3(config-if)# crypto map CMAP
 *Jan 28 04:10:54.138: %CRYPTO-6-ISAKMP_ON_OFF: ISAKMP is ON 
 R3(config)# end 
 
+
+R1# show crypto ipsec transform-set 				//verify commands
+R1# show crypto map
+R1# show crypto isakmp sa 
+R1# show crypto ipsec sa
+R1# debug eigrp packets
+
 -------8.3.3.3 (10.6.16)-----
 todo
 
