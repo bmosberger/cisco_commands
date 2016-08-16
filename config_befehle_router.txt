@@ -565,6 +565,17 @@ R2(config)# logging trap warnings			//change logging severits level zu 4  (2mög
 R2(config)# logging trap 4				//etz werden levels 4,3,2,1,0 geloggt
 
 
+-------8.2.2.4 ---------
+								//conf R1 as SNMP Agent
+R1(config)# snmp-server community ciscolab ro SNMP_ACL 		//Set SNMP community string (ciscolab), ro=red only, 
+								  named aceslist=snmpACL
+R1(config)# snmp-server location snmp_manager			//SNMP manager location
+R1(config)# snmp-server contact ciscolab_admin			//SNMP manager contact
+R1(config)# snmp-server host 192.168.1.3 version 2c ciscolab //host that recive SNMP,set version, set comunits string(oben)
+R1(config)# snmp-server enable traps				//enable all default SNMP traps
+R1(config)# ip access-list standard SNMP_ACL 			// create named ACL
+R1(config-std-nacl)# permit 192.168.1.3				//host empfangen von Roter SNMP infromationen erlauben 
+
 
 -------8.3.3.3 (10.6.16)-----
 todo
