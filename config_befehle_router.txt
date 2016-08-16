@@ -545,7 +545,13 @@ R1# debug eigrp packets
 
 
 -------8.1.2.6-------
+R1# show clock	
+R1# clock set 9:39:00 05 july 2013				//uhr einstellen
 
+R1(config)# ntp master 	//ntp master konfigurieren (5 ist startnummer->number of ntp hops away from authoritatve source
+
+R2(config)# ntp server 10.1.1.1 				//R2 als ntp client konfigurieren, ntp server angeben
+R2(config)# ntp update-calendar					//update calendar  periodisch mit ntp time 
 
 
 
@@ -559,36 +565,36 @@ todo
 ÑÑkp 9.5.2.7 conf & verifying IPv6 ACLÑÑ
 
 
-R1(config)# ipv6 route ::/0 s0/0/0        								//conf IPv6 default route use s0/0/0
-R2(config)# ipv6 route 2001:db8:acad::/48 s0/0/0		 					//conf IPv6 static route for traffic handling of r1 and r3 lan subnets
+R1(config)# ipv6 route ::/0 s0/0/0        				//conf IPv6 default route use s0/0/0
+R2(config)# ipv6 route 2001:db8:acad::/48 s0/0/0			//conf IPv6 static route for traffic handling of r1 and r3 lan subnets
 R2(config)# ipv6 route 2001:db8:cafe:c::/64 s0/0/1
-R1(config)# ipv6 access-list RESTRICT-VTY								//ACL erstellen 
-R1(config-ipv6-acl)# remark beschreibung								//info						
-R1(config-ipv6-acl)# permit tcp 2001:db8:acad:a::/64 any						//ACL allow hosts from 2001:db8:acad:a::/64 network to telnet to R1.
-R1(config-ipv6-acl)# permit tcp any any eq 22								//All hosts should only be able to ssh to R1.
-R1(config-ipv6-acl)# line vty 0 4									//Apply the RESTRICT-VTY ACL to R1’s VTY lines.
+R1(config)# ipv6 access-list RESTRICT-VTY				//ACL erstellen 
+R1(config-ipv6-acl)# remark beschreibung				//info						
+R1(config-ipv6-acl)# permit tcp 2001:db8:acad:a::/64 any   //ACL allow host from 2001:db8:acad:a::/64 network telnet to R1.
+R1(config-ipv6-acl)# permit tcp any any eq 22				//All hosts should only be able to ssh to R1.
+R1(config-ipv6-acl)# line vty 0 4					//Apply the RESTRICT-VTY ACL to R1’s VTY line
 
-R1(config-line)# ipv6 access-class RESTRICT-VTY in							// normaler weise traffic-filter anstatt access-class
+R1(config-line)# ipv6 access-class RESTRICT-VTY in			// normaler weise traffic-filter anstatt access-class
 R1(config-line)# end
 
-R1# clear ipv6 access-list RESTRICTED-VTY								// reset counter
+R1# clear ipv6 access-list RESTRICTED-VTY				// reset counter
 
-R1(config)# int g0/1											// remove cal from interface
+R1(config)# int g0/1							// remove cal from interface
 	
 R1(config-if)# no ipv6 traffic-filter RESTRICTED-LAN out
 
 R1(config-if)# end
 
-R1(config-ipv6-acl)# no permit tcp any host 2001:DB8:ACAD:A::3 eq www 				//delete cal statement
+R1(config-ipv6-acl)# no permit tcp any host 2001:DB8:ACAD:A::3 eq www 	//delete cal statement
 
 
 ------10.2.3.5--------
 
 
 R1(config)# interface g0/1
-R1(config-if)#ipv6 address 2001:DB8:ACAD:A::1/64   							//Unicast addresse
-R1(config-if)#ipv6 address FE80::1 link-local	  							// link-local addresse
-R1(config-if)#ipv6 unicast-routing									// enable unicast routing
+R1(config-if)#ipv6 address 2001:DB8:ACAD:A::1/64   			//Unicast addresse
+R1(config-if)#ipv6 address FE80::1 link-local	  			// link-local addresse
+R1(config-if)#ipv6 unicast-routing					// enable unicast routin
 
 
 //conf ipv6 dhcp server s(stateless)
@@ -597,12 +603,12 @@ R1(config-dhcpv6)#domain-name ccna-statelessDHCPv6.com
 R1(config-dhcpv6)#dns-server 2001:db8:acad:a::abcd
 R1(config-dhcpv6)#exit
 
-R1(config)#interface g0/1										//assign pool to interface 
+R1(config)#interface g0/1						//assign pool to interface 
 R1(config-if)#ipv6 dhcp server IPV6POOL-A
-R1(config-if)#ipv6 nd other-config-flag								// set flag
+R1(config-if)#ipv6 nd other-config-flag					// set flag
 R1(config-if)#end
 
-R1#show ipv6 dhcp pool											//Verifying the Stateless DHCPv6 Server
+R1#show ipv6 dhcp pool							//Verifying the Stateless DHCPv6 Server
 		
 
 //conf ipv6 dhcp server s(stateful)
@@ -613,12 +619,12 @@ R1(config-dhcpv6)#domain-name ccna-StatefulDHCPv6.com
 R1(config-dhcpv6)#end	
 
 R1(config)#interface g0/1									
-R1(config-if)#shutdown											//assign pool to interface
-R1(config-if)#ipv6 nd managed-config-flag								// set flag for statefull dhcpv6
+R1(config-if)#shutdown							//assign pool to interface
+R1(config-if)#ipv6 nd managed-config-flag				// set flag for statefull dhcpv6
 R1(config-if)#no shutdown
 R1(config-if)#end
 
-R1#show ipv6 dhcp pool											//Verifying the Stateless DHCPv6 Server
+R1#show ipv6 dhcp pool							//Verifying the Stateless DHCPv6 Server
 
 
 
@@ -631,7 +637,7 @@ RA(config-rtr)# router-id 1.1.1.1
 RA(config)# interface GigabitEthernet 0/0
 RA(config-if)# ipv6 ospf 1 area 1
 
-RA(config)# ipv6 route ::/0 2001:DB8:FEED:1::2							// statische route aus ospf
+RA(config)# ipv6 route ::/0 2001:DB8:FEED:1::2				// statische route aus ospf
 RA(config)# ipv6 ospf 10
 RA(config-rtr)# default information originate 
 
@@ -656,8 +662,8 @@ R1(config)# ipv6 router eigrp 1
 R1(config-rtr)# passive-interface g0/0
 
 R3(config)# ipv6 router eigrp 1
-R3(config-rtr)# passive-interface default  							// alle interfaces auf passive
-R3(config-rtr)# no passive-interface s0/0/0 						// s0/0/0 wieder active
+R3(config-rtr)# passive-interface default  				// alle interfaces auf passive
+R3(config-rtr)# no passive-interface s0/0/0 				// s0/0/0 wieder active
 
 
 							
