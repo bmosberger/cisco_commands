@@ -506,6 +506,35 @@ R3(cfg-crypto-trans)#exit
 R1(config)# crypto ipsec security-association lifetime seconds 1800 	//set ipsec security association lifetime to 30min
 R3(config)# crypto ipsec security-association lifetime seconds 1800 
 
+R1(config)# access-list 101 permit ip 192.168.1.0 0.0.0.255 192.168.3.0 0.0.0.255  //acl definieren, welcher traffic soll
+R3(config)# access-list 101 permit ip 192.168.3.0 0.0.0.255 192.168.1.0 0.0.0.255 //verschlüsselt werden (acl spiegeln sich)
+
+R1(config)# crypto map CMAP 10 ipsec-isakmp			//create crypto map mit name CMAP und sequence nr. 10
+R1(config-crypto-map)# match address 101			// acl dert cryptomap zuweisen
+R1(config-crypto-map)# set peer 10.2.2.1 			//Set peer IP/hostname (R3 remote VPN endpoint interface)
+R1(config-crypto-map)# set pfs group5 
+R1(config-crypto-map)# set transform-set 50 			//set transformset (wurde oben definiert)
+R1(config-crypto-map)# set security-association lifetime seconds 900	//lifetime
+R1(config-crypto-map)# exit 
+
+R3(config)# crypto map CMAP 10 ipsec-isakmp 			//r3 crypto map (gespiegelt)
+R3(config-crypto-map)# match address 101 
+R3(config-crypto-map)# set peer 10.1.1.1 
+R3(config-crypto-map)# set pfs group5 
+R3(config-crypto-map)# set transform-set 50 
+R3(config-crypto-map)# set security-association lifetime seconds 900 
+R3(config-crypto-map)# exit 
+
+
+R1(config)# interface S0/0/0 						//crypto map auf R1 dem interface zuweisen
+R1(config-if)# crypto map CMAP 
+*Jan 28 04:09:09.150: %CRYPTO-6-ISAKMP_ON_OFF: ISAKMP is ON 
+R1(config)# end 
+
+R3(config)# interface S0/0/1 						//crypto map auf R3 dem interface zuweisen
+R3(config-if)# crypto map CMAP 
+*Jan 28 04:10:54.138: %CRYPTO-6-ISAKMP_ON_OFF: ISAKMP is ON 
+R3(config)# end 
 
 -------8.3.3.3 (10.6.16)-----
 todo
