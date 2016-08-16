@@ -566,7 +566,7 @@ R2(config)# logging trap 4				//etz werden levels 4,3,2,1,0 geloggt
 
 
 -------8.2.2.4 ---------
-								//conf R1 as SNMP Agent
+								//conf R1 as SNMP Agent (genau so auch für switch)
 R1(config)# snmp-server community ciscolab ro SNMP_ACL 		//Set SNMP community string (ciscolab), ro=red only, 
 								  named aceslist=snmpACL
 R1(config)# snmp-server location snmp_manager			//SNMP manager location
