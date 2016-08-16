@@ -578,7 +578,20 @@ R1(config-std-nacl)# permit 192.168.1.3				//host empfangen von Roter SNMP infro
 
 
 -------8.3.3.3 (10.6.16)-----
-todo
+					//conf NetFlow on R2
+R2(config)# interface s0/0/0 		//sämtlicher eingehänder & ausgehänder traffic erfassen (auf beiden interfaces)
+R2(config-if)# ip flow ingress 		
+R2(config-if)# ip flow egress 
+R2(config-if)# interface s0/0/1 
+R2(config-if)# ip flow ingress 
+R2(config-if)# ip flow egress
+
+R2(config)# ip flow-export destination 192.168.2.3 9996		//conf the netflow collector (ip und port (hier 9996))
+R2(config)# ip flow-export version 9				//set netflow version to 9
+R2# show ip flow interface					//verify
+R2# show ip flow export						//verify
+R2# show ip cache flow
+R2# clear ip flow stats
 
 -----------IPv6-----------
 
