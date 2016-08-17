@@ -414,8 +414,8 @@ ISP(config)# interface virtual-template 1		//Create Virtual Template and associa
 ISP(config-if)# ip address 10.0.0.254 255.255.255.0	
 ISP(config-if)# mtu 1492				//max. übertragungseinheit
 ISP(config-if)# peer default ip address pool PPPoEPOOL	//Associate the Virtual Template with the pool of addresses
-ISP(config-if)# ppp authentication chap callin		// Configure CHAP to authenticate customers
-ISP(config-if)# exit
+ISP(config-if)# ppp authentication chap callin		// Configure CHAP to authenticate customers  callin=authentication
+ISP(config-if)# exit					//callin=authentication on incoming (receive) calls only
 
 ISP(config)# bba-group pppoe global			//Assign the template to the PPPoE group
 ISP(config-bba-group)# virtual-template 1
