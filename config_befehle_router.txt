@@ -700,5 +700,6 @@ R3(config-rtr)# passive-interface default  				// alle interfaces auf passive
 R3(config-rtr)# no passive-interface s0/0/0 				// s0/0/0 wieder active
 
 
-							
-
+R1(config)# ipv6 route ::/0 s0/0/0				//static default route (outgoing interface)	
+R1(config)# ipv6 router eigrp 1
+R1(config-rtr)#redistribute static				
